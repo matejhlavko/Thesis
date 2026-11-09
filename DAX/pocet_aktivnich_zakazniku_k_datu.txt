@@ -1,0 +1,11 @@
+Počet aktivních zákazníků k datu = 
+VAR SelectedDate = MAX('Calendar'[Date])
+RETURN
+    CALCULATE(
+        COUNTROWS('DimCustomer'),
+        FILTER(
+            'DimCustomer',
+            'DimCustomer'[ValidFrom] <= SelectedDate &&
+            (ISBLANK('DimCustomer'[ValidTo]) || 'DimCustomer'[ValidTo] > SelectedDate)
+        )
+    )

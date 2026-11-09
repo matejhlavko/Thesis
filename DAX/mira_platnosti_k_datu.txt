@@ -1,0 +1,12 @@
+Míra_Platnost_K_Datu = 
+VAR SelectedDate = MAX('Calendar'[Date])
+VAR RecordValidFrom = SELECTEDVALUE('DimCustomer'[ValidFrom])
+VAR RecordValidTo = SELECTEDVALUE('DimCustomer'[ValidTo])
+RETURN
+    IF(
+        NOT ISBLANK(RecordValidFrom) &&
+        RecordValidFrom <= SelectedDate && 
+        (ISBLANK(RecordValidTo) || RecordValidTo > SelectedDate),
+        1,
+        0
+    )

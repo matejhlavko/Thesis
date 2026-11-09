@@ -1,0 +1,200 @@
+{
+    "name": "Copy",
+    "objectId": "3ea9b294-829d-4c4a-803c-d114a6ac0714",
+    "properties": {
+        "jobMode": "Batch",
+        "source": {
+            "type": "SqlServerTable",
+            "connectionSettings": {
+                "type": "SqlServer",
+                "externalReferences": {
+                    "connection": "fa074347-8520-48bd-980c-b7ed996ef087"
+                }
+            }
+        },
+        "destination": {
+            "type": "LakehouseTable",
+            "connectionSettings": {
+                "type": "Lakehouse",
+                "typeProperties": {
+                    "workspaceId": "75338800-1fd0-4b50-bede-d1d027f49817",
+                    "artifactId": "6485cbf8-4245-4760-ac32-b246d21ce22a",
+                    "rootFolder": "Tables"
+                },
+                "externalReferences": {
+                    "connection": "ac329a18-4c51-4b60-9cb2-b87955719549"
+                }
+            }
+        },
+        "policy": {
+            "timeout": "0.12:00:00",
+            "retry": 0
+        }
+    },
+    "activities": [
+        {
+            "id": "3b84fc2e-ce24-456f-b1e5-409fd36d4904",
+            "properties": {
+                "source": {
+                    "datasetSettings": {
+                        "schema": "cdc",
+                        "table": "dbo_Customer_CT"
+                    },
+                    "partitionSettings": {
+                        "partitionOption": "None"
+                    }
+                },
+                "destination": {
+                    "datasetSettings": {
+                        "schema": "cdc",
+                        "table": "dbo_Customer_CT"
+                    },
+                    "applyVOrder": false,
+                    "enableTimestampNtz": false,
+                    "writeBehavior": "Append"
+                },
+                "enableStaging": false,
+                "translator": {
+                    "type": "TabularTranslator",
+                    "mappings": [
+                        {
+                            "source": {
+                                "name": "__$start_lsn",
+                                "type": "Byte[]",
+                                "physicalType": "binary",
+                                "length": "10"
+                            },
+                            "destination": {
+                                "name": "__$start_lsn",
+                                "physicalType": "binary"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "__$end_lsn",
+                                "type": "Byte[]",
+                                "physicalType": "binary",
+                                "length": "10"
+                            },
+                            "destination": {
+                                "name": "__$end_lsn",
+                                "physicalType": "binary"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "__$seqval",
+                                "type": "Byte[]",
+                                "physicalType": "binary",
+                                "length": "10"
+                            },
+                            "destination": {
+                                "name": "__$seqval",
+                                "physicalType": "binary"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "__$operation",
+                                "type": "Int32",
+                                "physicalType": "int"
+                            },
+                            "destination": {
+                                "name": "__$operation",
+                                "physicalType": "integer"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "__$update_mask",
+                                "type": "Byte[]",
+                                "physicalType": "varbinary",
+                                "length": "128"
+                            },
+                            "destination": {
+                                "name": "__$update_mask",
+                                "physicalType": "binary"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "CustomerID",
+                                "type": "Int32",
+                                "physicalType": "int"
+                            },
+                            "destination": {
+                                "name": "CustomerID",
+                                "physicalType": "integer"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "CustomerName",
+                                "type": "String",
+                                "physicalType": "varchar",
+                                "length": "100"
+                            },
+                            "destination": {
+                                "name": "CustomerName",
+                                "physicalType": "string"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "Region",
+                                "type": "String",
+                                "physicalType": "varchar",
+                                "length": "50"
+                            },
+                            "destination": {
+                                "name": "Region",
+                                "physicalType": "string"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "Email",
+                                "type": "String",
+                                "physicalType": "varchar",
+                                "length": "150"
+                            },
+                            "destination": {
+                                "name": "Email",
+                                "physicalType": "string"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "LastModifiedDate",
+                                "type": "DateTime",
+                                "physicalType": "datetime2",
+                                "precision": 7
+                            },
+                            "destination": {
+                                "name": "LastModifiedDate",
+                                "physicalType": "timestamp"
+                            }
+                        },
+                        {
+                            "source": {
+                                "name": "__$command_id",
+                                "type": "Int32",
+                                "physicalType": "int"
+                            },
+                            "destination": {
+                                "name": "__$command_id",
+                                "physicalType": "integer"
+                            }
+                        }
+                    ]
+                },
+                "typeConversionSettings": {
+                    "typeConversion": {
+                        "allowDataTruncation": true,
+                        "treatBooleanAsNumber": false
+                    }
+                }
+            }
+        }
+    ]
+}
