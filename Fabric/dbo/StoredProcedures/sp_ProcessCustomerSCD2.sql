@@ -3,7 +3,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- 1. Close active DimCustomer versions when a newer CDC event exists
+    -- Close DimCustomer versions when new CDC exists
     UPDATE target
     SET target.[ValidTo]  = src.[NextChangeTime],
         target.[IsActive] = 0
@@ -39,7 +39,7 @@ BEGIN
     ) AS src
         ON target.[CustomerSK] = src.[CustomerSK];
 
-    -- 2. Insert deduplicated INSERT / UPDATE_AFTER versions with chained ValidTo
+    -- INSERT/UPDATE_AFTER versions with ValidTo
     INSERT INTO [dbo].[DimCustomer] (
         [CustomerSK], [CustomerID], [CustomerName], [Region], [Email], [ValidFrom], [ValidTo], [IsActive]
     )
