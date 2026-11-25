@@ -3,7 +3,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- 1. Close active DimProduct versions when a newer CDC event exists
+    -- Close active DimProduct when new CDC exists
     UPDATE target
     SET target.[ValidTo]  = src.[NextChangeTime],
         target.[IsActive] = 0
@@ -39,7 +39,7 @@ BEGIN
     ) AS src
         ON target.[ProductSK] = src.[ProductSK];
 
-    -- 2. Insert deduplicated INSERT / UPDATE_AFTER versions with chained ValidTo
+    -- INSERT/UPDATE_AFTER version with ValidTo
     INSERT INTO [dbo].[DimProduct] (
         [ProductSK], [ProductID], [ProductName], [Category], [UnitPrice], [ValidFrom], [ValidTo], [IsActive]
     )
