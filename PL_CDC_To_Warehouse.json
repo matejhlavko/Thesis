@@ -1,0 +1,144 @@
+{
+    name PL_CDC_To_Warehouse,
+    objectId 8f24be5f-512f-4f97-90ec-728cd3455334,
+    properties {
+        activities [
+            {
+                name Copy job1,
+                type InvokeCopyJob,
+                dependsOn [],
+                policy {
+                    timeout 0.120000,
+                    retry 0,
+                    retryIntervalInSeconds 30,
+                    secureOutput false,
+                    secureInput false
+                },
+                typeProperties {
+                    copyJobId 3ea9b294-829d-4c4a-803c-d114a6ac0714,
+                    workspaceId 75338800-1fd0-4b50-bede-d1d027f49817,
+                    operationType RunCopyJob
+                },
+                externalReferences {
+                    connection 0c0c7ff5-7df7-4a68-99f2-1bbfa118bc55
+                }
+            },
+            {
+                name ProcessProductSCD2,
+                type SqlServerStoredProcedure,
+                dependsOn [
+                    {
+                        activity Copy job1,
+                        dependencyConditions [
+                            Succeeded
+                        ]
+                    }
+                ],
+                policy {
+                    timeout 0.120000,
+                    retry 0,
+                    retryIntervalInSeconds 30,
+                    secureOutput false,
+                    secureInput false
+                },
+                typeProperties {
+                    storedProcedureName [dbo].[sp_ProcessProductSCD2]
+                },
+                linkedService {
+                    name Thesis_DW,
+                    properties {
+                        annotations [],
+                        type DataWarehouse,
+                        typeProperties {
+                            endpoint t74lm76nm44ufmc4iz2j6kp7mm-acedg5oqd5iexpw62hicp5eyc4.datawarehouse.fabric.microsoft.com,
+                            artifactId 400ac243-3be1-4417-b60f-fe0d452f7781,
+                            workspaceId 75338800-1fd0-4b50-bede-d1d027f49817
+                        }
+                    }
+                }
+            },
+            {
+                name ProcessCustomerSCD2,
+                type SqlServerStoredProcedure,
+                dependsOn [
+                    {
+                        activity Copy job1,
+                        dependencyConditions [
+                            Succeeded
+                        ]
+                    }
+                ],
+                policy {
+                    timeout 0.120000,
+                    retry 0,
+                    retryIntervalInSeconds 30,
+                    secureOutput false,
+                    secureInput false
+                },
+                typeProperties {
+                    storedProcedureName [dbo].[sp_ProcessCustomerSCD2]
+                },
+                linkedService {
+                    name Thesis_DW,
+                    properties {
+                        annotations [],
+                        type DataWarehouse,
+                        typeProperties {
+                            endpoint t74lm76nm44ufmc4iz2j6kp7mm-acedg5oqd5iexpw62hicp5eyc4.datawarehouse.fabric.microsoft.com,
+                            artifactId 400ac243-3be1-4417-b60f-fe0d452f7781,
+                            workspaceId 75338800-1fd0-4b50-bede-d1d027f49817
+                        }
+                    }
+                }
+            },
+            {
+                name ProcessFactSalesOrder,
+                type SqlServerStoredProcedure,
+                dependsOn [
+                    {
+                        activity Copy job1,
+                        dependencyConditions [
+                            Succeeded
+                        ]
+                    },
+                    {
+                        activity ProcessProductSCD2,
+                        dependencyConditions [
+                            Succeeded
+                        ]
+                    },
+                    {
+                        activity ProcessCustomerSCD2,
+                        dependencyConditions [
+                            Succeeded
+                        ]
+                    }
+                ],
+                policy {
+                    timeout 0.120000,
+                    retry 0,
+                    retryIntervalInSeconds 30,
+                    secureOutput false,
+                    secureInput false
+                },
+                typeProperties {
+                    storedProcedureName [dbo].[sp_ProcessFactSalesOrder]
+                },
+                linkedService {
+                    name Thesis_DW,
+                    properties {
+                        annotations [],
+                        type DataWarehouse,
+                        typeProperties {
+                            endpoint t74lm76nm44ufmc4iz2j6kp7mm-acedg5oqd5iexpw62hicp5eyc4.datawarehouse.fabric.microsoft.com,
+                            artifactId 400ac243-3be1-4417-b60f-fe0d452f7781,
+                            workspaceId 75338800-1fd0-4b50-bede-d1d027f49817
+                        }
+                    }
+                }
+            }
+        ],
+        lastModifiedByObjectId 3d050aa3-3e1a-494b-ab6c-077584b37fdc,
+        lastPublishTime 2026-11-23T091152Z
+    }
+}
